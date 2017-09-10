@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Fragments */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="fragments-form">
@@ -14,13 +11,10 @@ use yii\widgets\ActiveForm;
 	
 	<?=$form->field($model, 'text')->textarea(['rows' => 10, 'cols' => 9, 'placeholder' => 'Write your fragment here'])->label('Fragment text')?>
 	
-	<?
-	$model->private = 1;
-	echo $form->field($model, 'private')->radioList([0 => 'Public', 1 => 'Private'])->label('Select type of fragment');
-	?>
+	<?=$form->field($model, 'private')->radioList([0 => 'Public', 1 => 'Private'])?>
 	
 	<div class="form-group">
-		<?=Html::submitButton('Create fragment', ['class' => 'btn btn-primary'])?>
+		<?=Html::submitButton($model->isNewRecord ? 'Create Fragment' : 'Update Fragment', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])?>
 	</div>
 	
 	<? ActiveForm::end(); ?>

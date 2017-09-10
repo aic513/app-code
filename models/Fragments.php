@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\mongodb\ActiveRecord;
 
 
 class Fragments extends \yii\mongodb\ActiveRecord
@@ -18,7 +19,9 @@ class Fragments extends \yii\mongodb\ActiveRecord
 		return [
 			'_id',
 			'text',
-			'private'
+			'private',
+			'create_at',
+			'update_at'
 		];
 	}
 
@@ -26,7 +29,11 @@ class Fragments extends \yii\mongodb\ActiveRecord
 	public function rules()
 	{
 		return [
-			[['text', 'private'], 'safe']
+			[
+				['text', 'private'], 'required',
+				'message' => 'This field is required'
+			],
+			['text', 'trim'],
 		];
 	}
 
@@ -36,7 +43,21 @@ class Fragments extends \yii\mongodb\ActiveRecord
 		return [
 			'_id' => 'ID',
 			'text' => 'Fragment code',
-			'private' => 'Is fragment private?',
+			'private' => 'Select type of fragment',
+		];
+	}
+
+
+	public function behaviors()
+	{
+		return [
+			'timestamp' => [
+				'class' => 'yii\behaviors\TimestampBehavior',
+				'attributes' => [
+					ActiveRecord::EVENT_BEFORE_INSERT => ['create_at','update_at'],
+					ActiveRecord::EVENT_BEFORE_UPDATE => ['update_at']
+				]
+			]
 		];
 	}
 }

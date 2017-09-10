@@ -2,14 +2,14 @@
 
 use yii\helpers\Html;
 
-$this->title = 'My Yii Application';
+$this->title = 'The system of storing fragments';
 ?>
 <div class="site-index">
 
 	<?=(!Yii::$app->user->isGuest) ? Html::a('Create fragment', ['/site/create'], ['class' => 'btn btn-success']) : ''?>
 
 	<div class="jumbotron">
-		<h1> The system of storing fragments</h1>
+		<h1><?= Html::encode($this->title) ?></h1>
 	</div>
 
 	<div class="body-content">
@@ -17,8 +17,9 @@ $this->title = 'My Yii Application';
 			<ul>
 				<?
 				foreach ($fragments as $fragment) {
+					$date = date("Y-m-d H:i:s", $fragment->create_at);
 					$text = \yii\helpers\StringHelper::truncateWords((string) $fragment->text, 10, '...');
-					echo "<li>".Html::a($text, ['/site/view/', 'id' => (string) $fragment->_id])."</li><hr>";
+					echo "{$date} <li>".Html::a($text, ['/site/view/', 'id' => (string) $fragment->_id])."</li><hr>";
 				}
 				?>
 			</ul>

@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-$this->title = 'Update Fragments: ' . $model->_id;
+$this->title = 'Create New Fragment' . $model->_id;
 $this->params['breadcrumbs'][] = 'Create';
 
 ?>

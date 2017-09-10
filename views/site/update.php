@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 
-$this->title = 'Update Fragments: ' . $model->_id;
+$this->title = 'Update Fragment' . $model->_id;
 $this->params['breadcrumbs'][] = ['label' => $model->_id, 'url' => ['view', 'id' => (string)$model->_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

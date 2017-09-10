@@ -63,12 +63,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if(Yii::$app->user->isGuest){
-            $fragments = Fragments::find()->where(['private'=>'0'])->orderBy(['_id' => SORT_DESC])->limit(10)->all();
+        if (Yii::$app->user->isGuest) {
+            $fragments = Fragments::find()->where(['private' => '0'])->orderBy(['create_at' => SORT_DESC])->limit(10)->all();
         } else {
             $fragments = Fragments::find()->all();
         }
-        return $this->render('index',compact('fragments'));
+
+        return $this->render('index', compact('fragments'));
     }
 
     /**
@@ -86,9 +87,8 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+
+        return $this->render('login', ['model' => $model,]);
     }
 
     /**
@@ -113,27 +113,34 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->render('create', ['model' => $model,]);
         }
     }
 
-    public function actionDelete($id){
+    /*
+     * Delete fragment
+     */
+
+    public function actionDelete($id)
+    {
         $this->findModel($id)->delete();
+
         return $this->redirect(['index']);
     }
+
+
+    /*
+     * Update fragment
+     */
 
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => (string)$model->_id]);
+            return $this->redirect(['view', 'id' => (string) $model->_id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model,]);
         }
     }
 
@@ -156,9 +163,8 @@ class SiteController extends Controller
         if (($model = Fragments::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('The requested fragment does not exist.');
         }
     }
 
-   
 }
