@@ -23,6 +23,10 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'mongodb' => [
+            'class' => '\yii\mongodb\Connection',
+            'dsn' => 'mongodb://admin:1111@localhost:27017/appDb',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
@@ -40,7 +44,6 @@ $config = [
             ],
         ],
         'db' => $db,
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -48,15 +51,34 @@ $config = [
             ],
         ],
 
+
+    ],
+
+    'modules' => [
+	    'gii1' => [
+		    'class' => 'yii\gii\Module',
+		    'generators' => [
+			    'mongoDbModel' => [
+				    'class' => 'yii\mongodb\gii\model\Generator'
+			    ]
+		    ],
+	    ],
     ],
     'params' => $params,
 ];
 
+/*
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
+        'panels' => [
+	        'mongodb' => [
+		        'class' => 'yii\\mongodb\\debug\\MongoDbPanel',
+		        // 'db' => 'mongodb', // MongoDB component ID, defaults to `db`. Uncomment and change this line, if you registered MongoDB component with a different ID.
+	        ],
+        ],
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
@@ -68,5 +90,6 @@ if (YII_ENV_DEV) {
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
+*/
 
 return $config;

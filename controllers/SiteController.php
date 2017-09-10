@@ -3,12 +3,14 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Fragments;
 use yii\filters\AccessControl;
+use yii\mongodb\Query;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\web\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -61,7 +63,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if(Yii::$app->user->isGuest){
+            $fragments = Fragments::find()->where(['private'=>'0'])->orderBy(['_id' => SORT_DESC])->limit(10)->all();
+        } else {
+            $fragments = Fragments::find()->all();
+        }
+        return $this->render('index',compact('fragments'));
     }
 
     /**
@@ -96,31 +103,62 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
+    /*
+     * Create new fragment
      */
-    public function actionContact()
+    public function actionCreate()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
+        $model = new Fragments();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect('index');
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-        return $this->render('contact', [
-            'model' => $model,
+    }
+
+    public function actionDelete($id){
+        $this->findModel($id)->delete();
+        return $this->redirect(['index']);
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => (string)$model->_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /*
+     * View fragment
+     */
+
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
+    /*
+     * Find fragment by id
      */
-    public function actionAbout()
+    protected function findModel($id)
     {
-        return $this->render('about');
+        if (($model = Fragments::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
+
+   
 }

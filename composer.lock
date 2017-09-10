@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a48585ef819fc004ff7e513d97a2196",
+    "content-hash": "3664907b86e694867b5802dae8ab0cab",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
