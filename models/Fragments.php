@@ -21,7 +21,8 @@ class Fragments extends \yii\mongodb\ActiveRecord
 			'text',
 			'private',
 			'create_at',
-			'update_at'
+			'update_at',
+			'user_id',
 		];
 	}
 
@@ -34,6 +35,7 @@ class Fragments extends \yii\mongodb\ActiveRecord
 				'message' => 'This field is required'
 			],
 			['text', 'trim'],
+			[['user_id'], 'default', 'value' => Yii::$app->user->identity->_id],
 		];
 	}
 
@@ -55,9 +57,9 @@ class Fragments extends \yii\mongodb\ActiveRecord
 				'class' => 'yii\behaviors\TimestampBehavior',
 				'attributes' => [
 					ActiveRecord::EVENT_BEFORE_INSERT => ['create_at','update_at'],
-					ActiveRecord::EVENT_BEFORE_UPDATE => ['update_at']
+					ActiveRecord::EVENT_BEFORE_UPDATE => ['update_at'],
 				]
-			]
+			],
 		];
 	}
 }

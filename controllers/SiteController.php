@@ -66,7 +66,7 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             $fragments = Fragments::find()->where(['private' => '0'])->orderBy(['create_at' => SORT_DESC])->limit(10)->all();
         } else {
-            $fragments = Fragments::find()->all();
+            $fragments = Fragments::find()->where(['user_id' => Yii::$app->user->identity->_id])->all();
         }
 
         return $this->render('index', compact('fragments'));

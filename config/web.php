@@ -53,7 +53,6 @@ $config = [
 
 
     ],
-
     'modules' => [
 	    'gii1' => [
 		    'class' => 'yii\gii\Module',
