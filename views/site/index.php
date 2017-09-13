@@ -11,7 +11,6 @@ $this->title = 'The system of storing fragments';
 	<div class="jumbotron">
 		<h1><?= Html::encode($this->title) ?></h1>
 	</div>
-
 	<div class="body-content">
 		<div class="row">
 			<ul>

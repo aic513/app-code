@@ -66,7 +66,9 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             $fragments = Fragments::find()->where(['private' => '0'])->orderBy(['create_at' => SORT_DESC])->limit(10)->all();
         } else {
-            $fragments = Fragments::find()->where(['user_id' => Yii::$app->user->identity->_id])->all();
+            $fragments1 = Fragments::find()->where(['private' => '0'])->all();
+            $fragments2 = Fragments::find()->where(['user_id' => Yii::$app->user->identity->_id])->all();
+            $fragments  = array_merge($fragments1, $fragments2);
         }
 
         return $this->render('index', compact('fragments'));
@@ -117,34 +119,7 @@ class SiteController extends Controller
         }
     }
 
-    /*
-     * Delete fragment
-     */
-
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-
-    /*
-     * Update fragment
-     */
-
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => (string) $model->_id]);
-        } else {
-            return $this->render('update', ['model' => $model,]);
-        }
-    }
-
-    /*
+     /*
      * View fragment
      */
 
